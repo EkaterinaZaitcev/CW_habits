@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from users.models import User
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    """Панель пользователи в админке"""
+    list_display = ('email', 'id', 'phone', 'tg_chat_id')
