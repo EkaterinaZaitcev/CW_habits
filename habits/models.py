@@ -3,7 +3,7 @@ from django.db import models
 from users.models import User
 
 
-class Habits(models.Model):
+class Habit(models.Model):
     """Класс привычек"""
     user = models.ForeignKey(
         User,
@@ -30,7 +30,7 @@ class Habits(models.Model):
     )
     pleasant_habit = models.BooleanField(
         default=False,
-        verbose_name="Полезная привычка",
+        verbose_name="Признак приятной привычки",
         help_text="Привычка, которую можно привязать к выполнению полезной привычки."
     )
     related_habit = models.ForeignKey(
