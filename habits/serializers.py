@@ -9,4 +9,4 @@ class HabitsSerializer(ModelSerializer):
     class Meta:
         model = Habit
         fields = "__all__"
-        validators = [HabitsValidators()]
+        validators = [HabitsValidators]
