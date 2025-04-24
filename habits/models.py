@@ -1,12 +1,11 @@
 from django.db import models
-
-from users.models import User
+from django.conf import settings
 
 
 class Habit(models.Model):
     """Класс привычек"""
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
@@ -19,7 +18,9 @@ class Habit(models.Model):
         verbose_name="Место",
         help_text="Место, в котором необходимо выполнять привычку.",
     )
-    time = models.TimeField(
+    time = models.DateTimeField(
+        auto_now=False,
+        auto_now_add=False,
         verbose_name="Время",
         help_text="Время, когда необходимо выполнять привычку."
     )
@@ -35,11 +36,12 @@ class Habit(models.Model):
     )
     related_habit = models.ForeignKey(
         "self",
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         verbose_name="Связанная привычка",
         help_text="Привычка, которая связана с другой привычкой, важно указывать для полезных привычек, но не для приятных."
     )
     periodicity = models.PositiveIntegerField(
+        default=1,
         verbose_name = "Периодичность",
         help_text = "Периодичность выполнения привычки для напоминания в днях."
     )
@@ -48,7 +50,9 @@ class Habit(models.Model):
         verbose_name="Вознаграждение",
         help_text="Чем пользователь должен себя вознаградить после выполнения."
     )
-    time_to_complete = models.DurationField(
+    time_to_complete = models.PositiveIntegerField(
+        null=True,
+        blank=True,
         verbose_name="Время на выполнение",
         help_text="Время, которое предположительно потратит пользователь на выполнение привычки."
     )
