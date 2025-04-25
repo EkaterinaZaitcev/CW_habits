@@ -1,10 +1,12 @@
 from datetime import timedelta
 
+from celery import shared_task
+
 from habits.models import Habit
 from habits.services import send_telegram_message
 from users.models import User
 
-
+@shared_task
 def send_reminder(pk):
     """Напоминание о привычке пользователю в назначенное время"""
     habit = Habit.objects.get(pk=pk)
