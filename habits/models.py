@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 
 class Habit(models.Model):
@@ -21,6 +22,7 @@ class Habit(models.Model):
     time = models.DateTimeField(
         auto_now=False,
         auto_now_add=False,
+        default=timezone.now,
         verbose_name="Время",
         help_text="Время, когда необходимо выполнять привычку."
     )
@@ -36,7 +38,9 @@ class Habit(models.Model):
     )
     related_habit = models.ForeignKey(
         "self",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
         verbose_name="Связанная привычка",
         help_text="Привычка, которая связана с другой привычкой, важно указывать для полезных привычек, но не для приятных."
     )
