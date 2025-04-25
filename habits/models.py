@@ -19,7 +19,7 @@ class Habit(models.Model):
         verbose_name="Место",
         help_text="Место, в котором необходимо выполнять привычку.",
     )
-    time = models.DateTimeField(
+    time = models.TimeField(
         auto_now=False,
         auto_now_add=False,
         default=timezone.now,
@@ -39,6 +39,7 @@ class Habit(models.Model):
     related_habit = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
+        default=1,
         blank=True,
         null=True,
         verbose_name="Связанная привычка",
@@ -54,9 +55,7 @@ class Habit(models.Model):
         verbose_name="Вознаграждение",
         help_text="Чем пользователь должен себя вознаградить после выполнения."
     )
-    time_to_complete = models.PositiveIntegerField(
-        null=True,
-        blank=True,
+    time_to_complete = models.DurationField(
         verbose_name="Время на выполнение",
         help_text="Время, которое предположительно потратит пользователь на выполнение привычки."
     )
