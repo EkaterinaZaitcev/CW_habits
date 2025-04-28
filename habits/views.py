@@ -7,21 +7,23 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from habits.models import Habit
 from habits.paginations import HabitsPaginator
 from habits.serializers import HabitsSerializer
+from habits.services import send_telegram_message
+from users.models import User
 from users.permissions import IsOwner
-from users.serializers import UserSerializer
 
 
 class HabitsCreateAPIview(CreateAPIView):
     """ Создание новой привычки """
     serializer_class = HabitsSerializer
     queryset = Habit.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,]
 
     def perform_create(self, serializer):
-        habit = serializer.save
-        habit.user == self.request.user
-        habit = serializer.save
+        habit = serializer.save(user=self.request.user)
         habit.save()
+        #if habit.user.tg_chat_id:
+        print(User.tg_chat_id)
+        send_telegram_message(habit.user.tg_chat_id, 'Создана новая привычка!')
 
 
 class HabitsRetrieveAPIview(RetrieveAPIView):
@@ -51,7 +53,7 @@ class HabitsUpdateAPIview(UpdateAPIView):
     def perform_update(self, serializer):
         """Перед сохранением привычки проверяем не ссылается связанная привычка на саму себя"""
         habit = serializer.save()
-        if not habit.is_nice and habit.related_habit and habit.id == habit.related_habit.id:
+        if not habit and habit.related_habit and habit.id == habit.related_habit.id:
             raise ValidationError(f"Связанная привычка не может ссылаться на саму себя")
         habit.save()
 

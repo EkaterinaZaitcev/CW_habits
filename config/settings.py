@@ -121,19 +121,25 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 
-CELERY_BEAT_SCHEDULE = {
-    'task-send_reminder': {
-        'task': 'habits.tasks.send_reminder',  # Путь к задаче
-        'schedule': timedelta(minutes=1),  # Расписание выполнения задачи (например, каждые 10 минут)
-    },
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
 }
 
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
-CELERY_TIMEZONE = TIME_ZONE
+CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
+CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+
+CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_RESULT_EXTENDED = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_ENABLE_UTC = False
 
 TELEGRAM_URL = "https://api.telegram.org/bot"
 TELEGRAM_BOT_API = os.getenv("TELEGRAM_BOT_API")
