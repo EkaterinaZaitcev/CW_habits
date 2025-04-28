@@ -39,7 +39,7 @@ class Habit(models.Model):
     related_habit = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
-        default=1,
+        default=None,
         blank=True,
         null=True,
         verbose_name="Связанная привычка",

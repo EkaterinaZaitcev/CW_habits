@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+import moment
 from rest_framework.serializers import ValidationError
 
 from habits import serializers
@@ -11,7 +12,7 @@ class HabitValidators:
 
     def valid_time(self, value):
         val = dict(value)
-        if val.get('time_to_complete' > timedelta(seconds=120)):
+        if val.get('time_to_complete').total_seconds() > 120:
             raise ValidationError(
                 'Время выполнения должно быть не больше 120 секунд.'
             )
@@ -30,7 +31,7 @@ class HabitValidators:
             related_habit = Habit.objects.get(pk=value.get('related_habit_id'))
             if not related_habit.is_pleasant:
                 raise serializers.ValidationError(
-                'В качестве приятной привычки можно выбрать только одно связанную привычку.'
+                'В качестве приятной привычки можно выбрать только одну связанную привычку.'
                 )
 
 
