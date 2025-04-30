@@ -19,10 +19,10 @@ class Habit(models.Model):
         verbose_name="Место",
         help_text="Место, в котором необходимо выполнять привычку.",
     )
-    time = models.TimeField(
-        auto_now=False,
-        auto_now_add=False,
+    time = models.DateTimeField(
         default=timezone.now,
+        null=True,
+        blank=True,
         verbose_name="Время",
         help_text="Время, когда необходимо выполнять привычку."
     )
