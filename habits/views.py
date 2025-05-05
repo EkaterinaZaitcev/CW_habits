@@ -68,6 +68,6 @@ class HabitsDeleteAPIview(DestroyAPIView):
 class HabitsPublishingListAPIview(ListAPIView):
     """ Просмотр публичных привычек """
     serializer_class = HabitsSerializer
-    queryset = Habit.objects.all()
+    queryset = Habit.objects.filter(publicity_sign=True)
     pagination_class = HabitsPaginator
     permission_classes = [AllowAny]

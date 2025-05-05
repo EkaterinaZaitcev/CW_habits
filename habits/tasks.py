@@ -18,7 +18,7 @@ def send_reminder():
             time__lt=now.time(), time__gt=time_threshold.time()
         )
         for habit in habits_to_remind:
-            chat_id = users.tg_chat_id
+            chat_id = habit.user.tg_chat_id
             if chat_id:
                 message = f"Я буду {habit.action} в {habit.time} в {habit.place}"
                 send_telegram_message(chat_id, message)
