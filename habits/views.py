@@ -37,7 +37,7 @@ class HabitsListAPIview(ListAPIView):
     """ Просмотр привычек пользователя """
     serializer_class = HabitsSerializer
     queryset = Habit.objects.all()
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated, ]
     pagination_class = HabitsPaginator
 
     def get_queryset(self):
