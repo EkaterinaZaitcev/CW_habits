@@ -37,7 +37,7 @@ class HabitsListAPIview(ListAPIView):
     """ Просмотр привычек пользователя """
     serializer_class = HabitsSerializer
     queryset = Habit.objects.all()
-    permission_classes = [IsAuthenticated, IsOwner]
+    permission_classes = [IsAuthenticated, ]
     pagination_class = HabitsPaginator
 
     def get_queryset(self):
@@ -68,6 +68,6 @@ class HabitsDeleteAPIview(DestroyAPIView):
 class HabitsPublishingListAPIview(ListAPIView):
     """ Просмотр публичных привычек """
     serializer_class = HabitsSerializer
-    queryset = Habit.objects.all()
+    queryset = Habit.objects.filter(publicity_sign=True)
     pagination_class = HabitsPaginator
     permission_classes = [AllowAny]
